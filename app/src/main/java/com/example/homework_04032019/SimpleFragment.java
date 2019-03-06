@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class SimpleFragment extends Fragment {
+    private static final String CURRENT_TEXT = "curText";
+    private static final String NEW_LINE = "\nnew line";
     private TextView textView;
     private Button addTextButton;
 
@@ -24,13 +26,13 @@ public class SimpleFragment extends Fragment {
         textView = view.findViewById(R.id.textView);
 
         if (savedInstanceState != null) {
-            textView.setText(savedInstanceState.getString("curText"));
+            textView.setText(savedInstanceState.getString(CURRENT_TEXT));
         }
 
         addTextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textView.append("\nnew line");
+                textView.append(NEW_LINE);
             }
         });
     }
@@ -39,6 +41,6 @@ public class SimpleFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putString("curText", textView.getText().toString());
+        outState.putString(CURRENT_TEXT, textView.getText().toString());
     }
 }
