@@ -19,20 +19,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initialiseView();
+        registerBroadcastReceiver();
+    }
 
-        counterTextView = findViewById(R.id.counterTextView);
-        startServiceButton = findViewById(R.id.startServiceButton);
-        intentAnyIntentService = new Intent(this, AnyIntentService.class);
+    private void registerBroadcastReceiver() {
         anyBroadcastReceiver = new AnyBroadcastReceiver(counterTextView);
-
         IntentFilter intentFilter = new IntentFilter(AnyIntentService.ACTION_CHANGE_COUNTER);
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         registerReceiver(anyBroadcastReceiver, intentFilter);
     }
 
+    private void initialiseView() {
+        counterTextView = findViewById(R.id.counterTextView);
+        startServiceButton = findViewById(R.id.startServiceButton);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         unregisterReceiver(anyBroadcastReceiver);
     }
 
@@ -51,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onButtonClick(View v) {
+        intentAnyIntentService = new Intent(this, AnyIntentService.class);
         startService(intentAnyIntentService.putExtra(AnyIntentService.KEY_START_COUNTER, true));
         startServiceButton.setEnabled(false);
     }
